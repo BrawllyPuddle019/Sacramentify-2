@@ -15,6 +15,9 @@ use App\Http\Controllers\Api\ActaController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::get('/ping', function () {
+    return response()->json(['success' => true, 'message' => 'API online'], 200);
+});
 
 // Rutas públicas para app móvil
 Route::post('/mobile/login', [AuthController::class, 'mobileLogin']);
