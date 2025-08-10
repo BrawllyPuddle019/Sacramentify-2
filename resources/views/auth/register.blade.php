@@ -26,8 +26,8 @@
             --text-dark: #2c3e50;
             --text-light: #6c757d;
             --white: #ffffff;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            --shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.15);
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.12);
             --bg-light: #f8fafc;
             --border-color: #e2e8f0;
         }
@@ -48,46 +48,34 @@
         /* Enhanced Animated Background */
         body::before {
             content: '';
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: 
-                radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(26,115,232,0.2) 0%, transparent 50%),
-                radial-gradient(circle at 0% 50%, rgba(0,99,168,0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 50%, rgba(7,33,70,0.3) 0%, transparent 50%);
-            background-size: 80% 80%, 60% 60%, 100% 100%, 50% 50%, 120% 120%;
-            animation: gradientShift 15s ease-in-out infinite;
-            pointer-events: none; z-index: 0;
-        }
-        @keyframes gradientShift {
-            0%,100% { background-position: 0% 0%,100% 100%,50% 50%,0% 50%,80% 50%;}
-            50% { background-position: 100% 100%,0% 0%,0% 100%,100% 50%,20% 50%;}
-        }
-        /* Geometric Patterns */
-        body::after {
-            content: '';
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="cross" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M10,0 L10,20 M0,10 L20,10" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23cross)"/></svg>');
-            pointer-events: none; z-index: 1;
+                radial-gradient(circle at 25% 25%, rgba(212, 175, 55, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(26, 115, 232, 0.1) 0%, transparent 60%);
+            background-size: 100% 100%;
+            pointer-events: none;
+            z-index: 0;
         }
 
-        /* Floating particles */
-        .particles {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 2;
+        /* Simple geometric pattern overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"><defs><pattern id="dots" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse"><circle cx="30" cy="30" r="1.5" fill="rgba(255,255,255,0.04)"/></pattern></defs><rect width="60" height="60" fill="url(%23dots)"/></svg>');
+            pointer-events: none;
+            z-index: 1;
         }
-        .particle {
-            position: absolute; background: rgba(255,255,255,0.1);
-            border-radius: 50%; animation: floatParticle 8s ease-in-out infinite;
-        }
-        .particle:nth-child(odd) {
-            animation-direction: reverse;
-            background: rgba(212,175,55,0.1);
-        }
-        @keyframes floatParticle {
-            0%,100% { transform: translateY(0px) translateX(0px) rotate(0deg); opacity: 0.1;}
-            50% { transform: translateY(-30px) translateX(15px) rotate(180deg); opacity: 0.3;}
-        }
+
 
         /* Scroll Progress Bar */
         .scroll-progress {
