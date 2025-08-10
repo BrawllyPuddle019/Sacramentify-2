@@ -1,0 +1,272 @@
+/* Estilos generales */
+body {
+    font-family: 'Yantramanav', sans-serif, monospace;
+    margin: 0;
+    padding: 0;
+  }
+  
+  header {
+    background-color: #ffffff;
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000; /* Asegura que el encabezado esté por encima de otros elementos */
+  }
+  
+  .header-content {
+    display: flex;
+    align-items: center;
+  }
+  
+  .header-content img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .site-info {
+    margin-left: 10px; /* Ajusta según sea necesario */
+  }
+  
+  .site-name {
+    font-size: 35px;
+    font-family: 'Yantramanav', sans-serif, monospace;
+    color: #1e5390;
+  }
+  
+  nav {
+    margin-left: auto;
+  }
+  
+  navbarNav a {
+    margin-right: 20px;
+    padding: 10px 15px;
+    color: #3b69cc;
+    font-weight: normal;
+    text-decoration: none;
+    transition: color 0.3s; /* Cambia solo el color al pasar el mouse */
+  }
+  
+  navbarNav a:hover {
+    color: #3e77f2;
+    text-decoration: none; /* Elimina el subrayado en :hover */
+  }
+  
+  
+  .hero {
+    background-color: #ffffff;
+    padding: 20px 0; /* Añade un espacio arriba y abajo */
+    text-align: center;
+    
+  }
+  
+  .hero img {
+    max-height: 1000px;
+    width: 100%;
+    height: auto;
+    margin-bottom: 100px; /* Añade un margen inferior */
+  }
+  
+  .hero h1 {
+    font-family: 'Yantramanav', sans-serif, monospace;
+    font-size: 28px;
+    margin: 20px 0;
+    color: #666;
+  }
+  
+  .hero a {
+    margin: 0 auto;
+    display: inline-block;
+    padding: 10px 15px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #333;
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+  
+  .hero a:hover {
+    background-color: #666;
+  }
+  
+  /* Pie de página */
+  footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+  }
+  
+  /* Estilos personalizados */
+  .logo {
+    max-height: 60px; /* Puedes ajustar la altura máxima según tus necesidades */
+  }
+  
+  /* Estilos personalizados */
+  .welcome-text {
+    font-family: 'Yantramanav', sans-serif;
+    font-size: 50px;
+    margin-bottom: 10px;
+    color: #666;
+  }
+  
+  .hero-content {
+    max-width: 800px; /* Puedes ajustar según sea necesario */
+    margin: 0 auto; /* Centra el contenido horizontalmente */
+  }
+  
+  .hero h1 {
+    font-family: 'Yantramanav', sans-serif;
+    font-size: 28px;
+    margin: 20px 0;
+    color: #666; /* Cambia este valor al gris que desees (#666 es un gris oscuro) */
+  }
+  
+  .navbar-nav {
+    margin-left: auto;
+  }
+  
+  .navbar-toggler {
+    margin-right: 10px; /* Ajusta según sea necesario */
+  }
+  
+  /* Estilos personalizados */
+  .youtube-video {
+    max-width: 100%; /* Ajusta según sea necesario */
+    margin: 0 auto; /* Centra horizontalmente */
+    margin-bottom: 100px;
+  }
+  
+  .youtube-video iframe {
+    width: 100%; /* Ajusta según sea necesario */
+    height: 400px; /* Ajusta la altura según sea necesario */
+  }
+  
+  /* Estilos personalizados */
+  .navbar-nav .nav-link {
+    margin-right: 10px; /* Ajusta el espacio entre botones según sea necesario */
+    font-size: 18px;
+  }
+  
+  
+  h1 {
+    text-align: center;
+  }
+  
+  .form-control {
+    width: 50%;
+    text-align: center;
+    margin: 0 auto;
+    max-width: 800px;
+  }
+  
+  .btn-primarys {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .form-label {
+    width: 50%;
+    text-align: center;
+    margin: 0 auto;
+    max-width: 800px;
+  }
+  
+  .body_acceso {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #2B3035;
+  }
+  
+  .container_acceso {
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center; /* Centrar contenido */
+    padding: 1rem;
+    max-width: 330px;
+  }
+  
+  
+  .container_acceso .form-floating:focus-within {
+    z-index: 2;
+  }
+  
+  .container_acceso input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  
+  .container_acceso input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+  
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    margin-bottom: 8px;
+  }
+  
+  input {
+    padding: 10px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button {
+    padding: 10px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #2980b9;
+  }
+  
+  .acceso_logo
+  {
+  align-self: center;
+  height: 35%;
+  width: 35%;
+  
+  }
+  
+  .background-container {
+    background-color: #287BB6;
+    padding: 50px; /* Ajusta según sea necesario */
+    text-align: center; /* Alinea el contenido al centro si es necesario */
+  }
+  
+  /* Ajusta el color del texto si es necesario */
+  .background-container h1,
+  .background-container p,
+  .background-container button {
+    color: #fff;
+  }
+  
+  .custom-image {
+    width: 1000px; /* Ajusta según tus necesidades */
+    height: 800px; /* Ajusta según tus necesidades */
+  }
+  
+  

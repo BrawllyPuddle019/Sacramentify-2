@@ -1,0 +1,698 @@
+<!-- Modal Create Acta -->
+<div class="modal fade                           <sel                                        <select class="form-select" name="matrimonio[madrina_esposo]">
+                        <option value="">Selecciona Madrina Esposo</option>
+                        @foreach ($personas as $persona)
+                            @if ($persona->sexo === 0)
+                                <option value="{{ $persona->cve_persona }}" data-sexo="{{ $persona->sexo }}">{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</option>
+                            @endif
+                        @endforeach
+                    </select>class="form-select" name="matrimonio[padrino_esposo]">
+                        <option value="">Selecciona Padrino Esposo</option>
+                        @foreach ($personas as $persona)
+                            @if ($persona->sexo === 1)
+                                <option value="{{ $persona->cve_persona }}" data-sexo="{{ $persona->sexo }}">{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</option>
+                            @endif
+                        @endforeach
+                    </select>s="form-select" name="matrimonio[cve_esposa]" id="cve_esposa" required>
+                        <option value="">Selecciona la Esposa</option>
+                        @foreach ($personas as $persona)
+                            @if ($persona->sexo === 0)
+                                <option value="{{ $persona->cve_persona }}" data-sexo="{{ $persona->sexo }}">{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</option>
+                            @endif
+                        @endforeach
+                    </select>     <select class="form-select" name="matrimonio[cve_esposo]" id="cve_esposo" required>
+                        <option value="">Selecciona el Esposo</option>
+                        @foreach ($personas as $persona)
+                            @if ($persona->sexo === 1)
+                                <option value="{{ $persona->cve_persona }}" data-sexo="{{ $persona->sexo }}">{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</option>
+                            @endif
+                        @endforeach
+                    </select>eateActa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Nueva Acta</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="{{ route('actas.store') }}" method="post" id="createActaForm">
+        @csrf
+        <input type="hidden" name="tipo_acta_real" id="tipo_acta_real">
+        
+        <div class="modal-body">
+          <div class="container-fluid">
+            {{-- TIPO DE ACTA --}}
+            <div class="row">
+              <div class="col-12">
+                <div class="mb-3">
+                  <label for="tipo_acta" class="form-label">Tipo de Acta</label>
+                  <select class="form-select" name="tipo_acta" id="tipo_acta" required>
+                      <option value="">Selecciona un sacramento</option>
+                      @foreach ($sacramentos as $sacramento)
+                      <option value="{{ $sacramento->cve_sacramentos }}" data-tipo="{{ strtolower($sacramento->nombre) }}">{{ $sacramento->nombre }}</option>
+                      @endforeach
+                  </select>
+
+                </div>
+              </div>
+            </div>
+
+            {{-- CAMPOS ESPECÍFICOS POR TIPO DE ACTA --}}
+            <div id="camposMatrimonio" style="display:none;">
+              <div class="row">
+                <div class="col-lg-6 col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label">Esposo *</label>
+                    <select class="form-select person-select" name="matrimonio[cve_esposo]" id="cve_persona_matrimonio" required>
+                      <option value="">Selecciona al Esposo</option>
+                        @foreach ($personas as $persona)
+                        @if ($persona->sexo === 1)
+                            <option value="{{ $persona->cve_persona }}" data-sexo="{{ $persona->sexo }}">{{ $persona->nombre }} {{ $persona->paterno }} {{ $persona->materno }}</option>
+                        @endif
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label">Esposa *</label>
+                    <select class="form-select person-select" name="matrimonio[cve_esposa]" id="cve_persona2" required>
+                        <option value="">Selecciona a la Esposa</option>
+                        @foreach ($personas as $persona)
+                            @if ($persona->sexo === 0)
+                                <option value="{{ $persona->cve_persona }}" data-sexo="{{ $persona->sexo }}">{{ $persona->nombre }} {{ $persona->paterno }} {{ $persona->materno }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
+              </div>
+              
+              {{-- PADRINOS DEL ESPOSO --}}
+              <div class="row">
+                <div class="col-lg-6 col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label">Padrino Esposo</label>
+                    <select class="form-select person-select" name="matrimonio[padrino_esposo]">
+                        <option value="">Selecciona Padrino Esposo</option>
+                        @foreach ($personas as $persona)
+                            @if ($persona->sexo === 1)
+                                <option value="{{ $persona->cve_persona }}" data-sexo="{{ $persona->sexo }}">{{ $persona->nombre }} {{ $persona->paterno }} {{ $persona->materno }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label">Madrina Esposo</label>
+                    <select class="form-select person-select" name="matrimonio[madrina_esposo]">
+                        <option value="">Selecciona Madrina Esposo</option>
+                        @foreach ($personas as $persona)
+                            @if ($persona->sexo === 0)
+                                <option value="{{ $persona->cve_persona }}" data-sexo="{{ $persona->sexo }}">{{ $persona->nombre }} {{ $persona->paterno }} {{ $persona->materno }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
+              </div>
+              
+              {{-- PADRINOS DE LA ESPOSA --}}
+              <div class="row">
+                <div class="col-lg-6 col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label">Padrino Esposa</label>
+                    <select class="form-select" name="matrimonio[padrino_esposa]">
+                        <option value="">Selecciona Padrino Esposa</option>
+                        @foreach ($personas as $persona)
+                            @if ($persona->sexo === 1)
+                                <option value="{{ $persona->cve_persona }}">{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label">Madrina Esposa</label>
+                    <select class="form-select" name="matrimonio[madrina_esposa]">
+                        <option value="">Selecciona Madrina Esposa</option>
+                        @foreach ($personas as $persona)
+                            @if ($persona->sexo === 0)
+                                <option value="{{ $persona->cve_persona }}">{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
+              </div>
+              
+              {{-- PADRES DEL ESPOSO --}}
+              <div class="row">
+                <div class="col-lg-6 col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label">Padre Esposo</label>
+                    <select class="form-select" name="matrimonio[padre_esposo]">
+                        <option value="">Selecciona Padre Esposo</option>
+                        @foreach ($personas as $persona)
+                            @if ($persona->sexo === 1)
+                                <option value="{{ $persona->cve_persona }}">{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label">Madre Esposo</label>
+                    <select class="form-select" name="matrimonio[madre_esposo]">
+                        <option value="">Selecciona Madre Esposo</option>
+                        @foreach ($personas as $persona)
+                            @if ($persona->sexo === 0)
+                                <option value="{{ $persona->cve_persona }}">{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
+              </div>
+              
+              {{-- PADRES DE LA ESPOSA --}}
+              <div class="row">
+                <div class="col-lg-6 col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label">Padre Esposa</label>
+                    <select class="form-select" name="matrimonio[padre_esposa]">
+                        <option value="">Selecciona Padre Esposa</option>
+                        @foreach ($personas as $persona)
+                            @if ($persona->sexo === 1)
+                                <option value="{{ $persona->cve_persona }}">{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label">Madre Esposa</label>
+                    <select class="form-select" name="matrimonio[madre_esposa]">
+                        <option value="">Selecciona Madre Esposa</option>
+                        @foreach ($personas as $persona)
+                            @if ($persona->sexo === 0)
+                                <option value="{{ $persona->cve_persona }}">{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="camposBautizo" style="display:none;">
+              <div class="row">
+                <div class="col-12">
+                  <div class="mb-3">
+                    <label class="form-label">Persona que se bautiza *</label>
+                    <select class="form-select" name="bautizo[cve_persona]" id="cve_persona_bautizo" required>
+                        <option value="">Selecciona una Persona</option>
+                        @foreach ($personas as $persona)
+                            <option value="{{ $persona->cve_persona }}">{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</option>
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label">Padrino</label>
+                    <select class="form-select" name="bautizo[padrino]">
+                        <option value="">Selecciona Padrino</option>
+                        @foreach ($personas as $persona)
+                            @if ($persona->sexo === 1)
+                                <option value="{{ $persona->cve_persona }}">{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label">Madrina</label>
+                    <select class="form-select" name="bautizo[madrina]">
+                        <option value="">Selecciona Madrina</option>
+                        @foreach ($personas as $persona)
+                            @if ($persona->sexo === 0)
+                                <option value="{{ $persona->cve_persona }}">{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label">Padre</label>
+                    <select class="form-select" name="bautizo[padre]">
+                        <option value="">Selecciona el Padre</option>
+                        @foreach ($personas as $persona)
+                            @if ($persona->sexo === 1)
+                                <option value="{{ $persona->cve_persona }}">{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label">Madre</label>
+                    <select class="form-select" name="bautizo[madre]">
+                        <option value="">Selecciona la Madre</option>
+                        @foreach ($personas as $persona)
+                            @if ($persona->sexo === 0)
+                                <option value="{{ $persona->cve_persona }}">{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="camposConfirmacion" style="display:none;">
+              <div class="row">
+                <div class="col-12">
+                  <div class="mb-3">
+                    <label class="form-label">Persona que se confirma *</label>
+                    <select class="form-select" name="confirmacion[cve_persona]" id="cve_persona_confirmacion" required>
+                        <option value="">Selecciona una Persona</option>
+                        @foreach ($personas as $persona)
+                            <option value="{{ $persona->cve_persona }}">{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</option>
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
+              </div>
+              
+              {{-- PADRES DEL CONFIRMANDO --}}
+              <div class="row">
+                <div class="col-lg-6 col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label">Padre del Confirmando</label>
+                    <select class="form-select" name="confirmacion[padre]">
+                        <option value="">Selecciona el Padre</option>
+                        @foreach ($personas as $persona)
+                            @if ($persona->sexo === 1)
+                                <option value="{{ $persona->cve_persona }}">{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label">Madre del Confirmando</label>
+                    <select class="form-select" name="confirmacion[madre]">
+                        <option value="">Selecciona la Madre</option>
+                        @foreach ($personas as $persona)
+                            @if ($persona->sexo === 0)
+                                <option value="{{ $persona->cve_persona }}">{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
+              </div>
+              
+              {{-- PADRINOS DE CONFIRMACIÓN --}}
+              <div class="row">
+                <div class="col-lg-6 col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label">Padrino de Confirmación</label>
+                    <select class="form-select" name="confirmacion[padrino]">
+                        <option value="">Selecciona Padrino de Confirmación</option>
+                        @foreach ($personas as $persona)
+                            @if ($persona->sexo === 1)
+                                <option value="{{ $persona->cve_persona }}">{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label">Madrina de Confirmación</label>
+                    <select class="form-select" name="confirmacion[madrina]">
+                        <option value="">Selecciona Madrina de Confirmación</option>
+                        @foreach ($personas as $persona)
+                            @if ($persona->sexo === 0)
+                                <option value="{{ $persona->cve_persona }}">{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {{-- CAMPOS GENERALES --}}
+            <div class="row">
+              <div class="col-12">
+                <div class="mb-3">
+                  <label for="cve_ermitas" class="form-label">Ermita</label>
+                  <select class="form-select" name="cve_ermitas" id="cve_ermitas">
+                    <option value="">Selecciona la Ermita</option>
+                    @foreach ($ermitas as $ermita)
+                      <option value="{{ $ermita->cve_ermitas }}">{{ $ermita->nombre_ermita }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6 col-md-12">
+                <div class="mb-3">
+                  <label for="cve_sacerdotes_celebrante" class="form-label">Sacerdote Celebrante</label>
+                  <select class="form-select" name="cve_sacerdotes_celebrante" id="cve_sacerdotes_celebrante">
+                    <option value="">Selecciona el Sacerdote</option>
+                    @foreach ($sacerdotes as $sacerdote)
+                      <option value="{{ $sacerdote->cve_sacerdotes }}">{{ $sacerdote->nombre_sacerdote }} {{ $sacerdote->apellido_paterno }} {{ $sacerdote->apellido_materno }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-12">
+                <div class="mb-3">
+                  <label for="cve_sacerdotes_asistente" class="form-label">Sacerdote Asistente</label>
+                  <select class="form-select" name="cve_sacerdotes_asistente" id="cve_sacerdotes_asistente">
+                    <option value="">Selecciona el Sacerdote</option>
+                    @foreach ($sacerdotes as $sacerdote)
+                      <option value="{{ $sacerdote->cve_sacerdotes }}">{{ $sacerdote->nombre_sacerdote }} {{ $sacerdote->apellido_paterno }} {{ $sacerdote->apellido_materno }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12">
+                <div class="mb-3">
+                  <label for="cve_obispos_celebrante" class="form-label">Obispo Celebrante</label>
+                  <select class="form-select" name="cve_obispos_celebrante" id="cve_obispos_celebrante">
+                    <option value="">Selecciona el Obispo</option>
+                    @foreach ($obispos as $obispo)
+                      <option value="{{ $obispo->cve_obispos }}">{{ $obispo->nombre_obispo }} {{ $obispo->apellido_paterno }} {{ $obispo->apellido_materno }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6 col-md-12">
+                <div class="mb-3">
+                  <label for="fecha" class="form-label">Fecha *</label>
+                  <input type="date" class="form-control" name="fecha" id="fecha" required>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-12">
+                <div class="mb-3">
+                  <label for="Libro" class="form-label">Libro *</label>
+                  <input type="text" class="form-control" name="Libro" id="Libro" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6 col-md-12">
+                <div class="mb-3">
+                  <label for="Fojas" class="form-label">Fojas *</label>
+                  <input type="number" class="form-control" name="Fojas" id="Fojas" required>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-12">
+                <div class="mb-3">
+                  <label for="Folio" class="form-label">Folio *</label>
+                  <input type="number" class="form-control" name="Folio" id="Folio" required>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+<button type="submit" class="btn btn-primary" onclick="document.getElementById('createActaForm').submit();">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tipoActaSelect = document.getElementById('tipo_acta');
+  const tipoActaReal = document.getElementById('tipo_acta_real');
+  const secciones = {
+    matrimonio: document.getElementById('camposMatrimonio'),
+    bautizo: document.getElementById('camposBautizo'),
+    confirmacion: document.getElementById('camposConfirmacion')
+  };
+
+  // Ocultar todas las secciones al inicio
+  Object.values(secciones).forEach(sec => sec.style.display = 'none');
+
+  tipoActaSelect.addEventListener('change', function() {
+    // Ocultar todas las secciones
+    Object.values(secciones).forEach(sec => sec.style.display = 'none');
+    // Guardar valor real para validación
+    tipoActaReal.value = this.value;
+
+    // Buscar el tipo de acta seleccionada (matrimonio, bautizo, confirmacion)
+    const selectedOption = this.options[this.selectedIndex];
+    const tipoTexto = selectedOption.dataset.tipo; // ejemplo: 'matrimonio'
+
+    if (tipoTexto && secciones[tipoTexto]) {
+      secciones[tipoTexto].style.display = 'block';
+    }
+  });
+
+  // Validación mejorada al enviar
+  document.getElementById('createActaForm').addEventListener('submit', function(e) {
+    let isValid = true;
+    const form = this;
+
+    // Resetear clases de error
+    form.querySelectorAll('.is-invalid').forEach(el => {
+      el.classList.remove('is-invalid');
+    });
+
+    // Validar campos generales
+    const camposGenerales = ['fecha', 'Libro', 'Fojas', 'Folio', 'tipo_acta'];
+    camposGenerales.forEach(id => {
+      const field = document.getElementById(id);
+      if (field && field.hasAttribute('required') && !field.value.trim()) {
+        field.classList.add('is-invalid');
+        isValid = false;
+      }
+    });
+
+    // Validar campos específicos según el sacramento
+    const tipoActa = tipoActaReal.value;
+    if (tipoActa) {
+      // Buscar el tipo de acta seleccionada (matrimonio, bautizo, confirmacion)
+      const selectedOption = tipoActaSelect.options[tipoActaSelect.selectedIndex];
+      const tipoTexto = selectedOption.dataset.tipo;
+      if (tipoTexto && secciones[tipoTexto]) {
+        const camposRequeridos = secciones[tipoTexto].querySelectorAll('[required]');
+        camposRequeridos.forEach(field => {
+          if (!field.value) {
+            field.classList.add('is-invalid');
+            isValid = false;
+          }
+        });
+      }
+    }
+
+    if (!isValid) {
+      e.preventDefault();
+      alert('Por favor, completa todos los campos requeridos marcados con *');
+    }
+  });
+
+  // ============================================================================
+  // INICIALIZACIÓN DE SELECT2 PARA BÚSQUEDA INTUITIVA DE PERSONAS
+  // ============================================================================
+  
+  // Configuración de Select2 SOLO para el modal de creación
+  function initializeSelect2() {
+    console.log('🎯 Inicializando Select2 SOLO para modal de creación...');
+    
+    // Buscar SOLO los selects dentro del modal de creación (#createActa)
+    $('#createActa select').each(function() {
+      const $select = $(this);
+      const hasPersonas = $select.find('option').length > 1 && 
+                         $select.find('option:contains("Selecciona")').length > 0 &&
+                         ($select.find('option:contains("Esposo")').length > 0 ||
+                          $select.find('option:contains("Esposa")').length > 0 ||
+                          $select.find('option:contains("Padrino")').length > 0 ||
+                          $select.find('option:contains("Madrina")').length > 0 ||
+                          $select.find('option:contains("Padre")').length > 0 ||
+                          $select.find('option:contains("Madre")').length > 0 ||
+                          $select.attr('name')?.includes('persona'));
+
+      if (hasPersonas) {
+        console.log('👤 Configurando select de persona en modal de creación:', $select.attr('name'));
+        
+        // Agregar clase person-select si no la tiene
+        if (!$select.hasClass('person-select')) {
+          $select.addClass('person-select');
+        }
+
+        // Destruir Select2 existente si ya está inicializado
+        if ($select.hasClass('select2-hidden-accessible')) {
+          $select.select2('destroy');
+        }
+
+        // Agregar atributo data-sexo a las opciones basado en el contenido
+        $select.find('option').each(function() {
+          const $option = $(this);
+          const text = $option.text().toLowerCase();
+          const selectName = $select.attr('name')?.toLowerCase() || '';
+          
+          if (!$option.attr('data-sexo') && $option.val()) {
+            // Determinar sexo basado en el contexto
+            if (selectName.includes('esposo') || selectName.includes('padrino') || selectName.includes('padre')) {
+              $option.attr('data-sexo', '1'); // Masculino
+            } else if (selectName.includes('esposa') || selectName.includes('madrina') || selectName.includes('madre')) {
+              $option.attr('data-sexo', '0'); // Femenino
+            } else {
+              // Para casos generales, intentar detectar por posición en el DOM
+              $option.attr('data-sexo', '2'); // Neutro (ambos sexos)
+            }
+          }
+        });
+      }
+    });
+
+    // Aplicar Select2 SOLO a los selects de personas dentro del modal de creación
+    $('#createActa .person-select').select2({
+      theme: 'bootstrap-5',
+      dropdownParent: $('#createActa'), // IMPORTANTE: Solo dentro del modal de creación
+      placeholder: function() {
+        const selectName = $(this).attr('name')?.toLowerCase() || '';
+        if (selectName.includes('esposo')) return 'Buscar esposo...';
+        if (selectName.includes('esposa')) return 'Buscar esposa...';
+        if (selectName.includes('padrino')) return 'Buscar padrino...';
+        if (selectName.includes('madrina')) return 'Buscar madrina...';
+        if (selectName.includes('padre')) return 'Buscar padre...';
+        if (selectName.includes('madre')) return 'Buscar madre...';
+        return 'Buscar persona...';
+      },
+      allowClear: true,
+      dropdownParent: $('#createActa'),
+      language: {
+        noResults: function() {
+          return "No se encontraron resultados";
+        },
+        searching: function() {
+          return "Buscando...";
+        },
+        inputTooShort: function() {
+          return "Escribe al menos 2 caracteres para buscar";
+        },
+        loadingMore: function() {
+          return "Cargando más resultados...";
+        }
+      },
+      minimumInputLength: 2,
+      templateResult: function(data) {
+        if (data.loading) {
+          return data.text;
+        }
+        
+        if (!data.id) {
+          return data.text;
+        }
+        
+        // Formato personalizado para mostrar los resultados
+        if (data.element && data.element.dataset) {
+          const sexo = data.element.dataset.sexo;
+          let icon = '<i class="fas fa-user text-secondary"></i>';
+          
+          if (sexo === '1') {
+            icon = '<i class="fas fa-male text-primary"></i>';
+          } else if (sexo === '0') {
+            icon = '<i class="fas fa-female text-danger"></i>';
+          }
+          
+          return $(`<div class="d-flex align-items-center">
+            ${icon}
+            <span class="ms-2">${data.text}</span>
+          </div>`);
+        }
+        
+        return data.text;
+      },
+      templateSelection: function(data) {
+        return data.text;
+      }
+    });
+
+    console.log('✅ Select2 inicializado para', $('#createActa .person-select').length, 'selectores de personas en modal de creación');
+  }
+
+  // Reinicializar Select2 cuando se cambia el tipo de acta (SOLO en modal de creación)
+  function reinitializePersonSelects() {
+    console.log('🔄 Reinicializando Select2 en modal de creación...');
+    $('#createActa .person-select').select2('destroy');
+    setTimeout(() => {
+      initializeSelect2();
+    }, 100);
+  }
+
+  // NO inicializar automáticamente al cargar la página
+  $(document).ready(function() {
+    console.log('🚀 Preparando Select2 para el modal de creación de actas...');
+    // NO inicializar automáticamente para evitar conflictos con modales de edición
+  });
+
+  // Reinicializar cuando cambia el tipo de acta (SOLO si estamos en modal de creación)
+  tipoActaSelect.addEventListener('change', function() {
+    // Verificar que el elemento está dentro del modal de creación
+    if ($(tipoActaSelect).closest('#createActa').length > 0) {
+      console.log('🔄 Tipo de acta cambió en modal de creación, reinicializando Select2...');
+      setTimeout(() => {
+        reinitializePersonSelects();
+      }, 300);
+    }
+  });
+
+  // Limpiar Select2 al cerrar el modal de creación
+  $('#createActa').on('hidden.bs.modal', function() {
+    console.log('🧹 Limpiando selects del modal de creación...');
+    $('#createActa .person-select').each(function() {
+      if ($(this).hasClass('select2-hidden-accessible')) {
+        $(this).select2('destroy');
+      }
+    });
+    $('#createActa .person-select').val(null).trigger('change');
+  });
+
+  // Inicializar SOLO cuando se abre el modal de creación
+  $('#createActa').on('shown.bs.modal', function() {
+    console.log('👀 Modal de creación abierto, inicializando Select2...');
+    setTimeout(() => {
+      // Solo inicializar si hay selects de personas y no están ya inicializados
+      if ($('#createActa .person-select').length > 0) {
+        console.log('🎯 Inicializando Select2 para selects en modal de creación...');
+        initializeSelect2();
+      }
+    }, 200);
+  });
+
+});
+</script>
+
+
