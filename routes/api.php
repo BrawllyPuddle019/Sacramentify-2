@@ -21,7 +21,8 @@ Route::get('/ping', function () {
 
 // Rutas públicas para app móvil
 Route::post('/mobile/login', [AuthController::class, 'mobileLogin']);
-
+// Cambiar contraseña
+Route::put('/mobile/change-password', [AuthController::class, 'changePassword']);
 // Rutas protegidas para app móvil
 Route::middleware('auth:sanctum')->group(function () {
     // Información del usuario autenticado
