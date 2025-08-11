@@ -80,10 +80,19 @@ class AuthController extends Controller
             // Validar los datos
             $request->validate([
                 'current_password' => 'required|string',
-                'new_password' => 'required|string|min:8|confirmed', // confirmed busca new_password_confirmation
+                'new_password' => 'required|string|min:6', // Cambiado a 6 para coincidir con el frontend
+                'new_password_confirmation' => 'required|string|same:new_password', // Validación manual
             ]);
 
             $user = $request->user();
+            
+            // Verificar que el usuario esté autenticado
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Usuario no autenticado'
+                ], 401);
+            }
 
             // Verificar que la contraseña actual sea correcta
             if (!Hash::check($request->current_password, $user->password)) {
@@ -93,9 +102,20 @@ class AuthController extends Controller
                 ], 400);
             }
 
+            // Verificar que las contraseñas nuevas coincidan
+            if ($request->new_password !== $request->new_password_confirmation) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Las contraseñas nuevas no coinciden'
+                ], 400);
+            }
+
             // Actualizar la contraseña
             $user->password = Hash::make($request->new_password);
             $user->save();
+
+            // Log para debugging
+            Log::info('Contraseña cambiada exitosamente para usuario: ' . $user->email);
 
             return response()->json([
                 'success' => true,
@@ -103,6 +123,7 @@ class AuthController extends Controller
             ]);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Error de validación al cambiar contraseña: ' . json_encode($e->errors()));
             return response()->json([
                 'success' => false,
                 'message' => 'Datos inválidos',
@@ -110,9 +131,10 @@ class AuthController extends Controller
             ], 422);
         } catch (\Exception $e) {
             Log::error('Error al cambiar contraseña: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
             return response()->json([
                 'success' => false,
-                'message' => 'Error interno del servidor'
+                'message' => 'Error interno del servidor: ' . $e->getMessage()
             ], 500);
         }
     }

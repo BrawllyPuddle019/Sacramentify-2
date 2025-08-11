@@ -21,14 +21,21 @@ Route::get('/ping', function () {
 
 // Rutas públicas para app móvil
 Route::post('/mobile/login', [AuthController::class, 'mobileLogin']);
-// Cambiar contraseña
-Route::post('/mobile/change-password', [AuthController::class, 'changePassword']);
+
 // Rutas protegidas para app móvil
 Route::middleware('auth:sanctum')->group(function () {
     // Información del usuario autenticado
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+    
+    // === RUTAS DE AUTENTICACIÓN ===
+    
+    // Cambiar contraseña (MOVIDO AQUÍ)
+    Route::post('/mobile/change-password', [AuthController::class, 'changePassword']);
+    
+    // Logout
+    Route::post('/mobile/logout', [AuthController::class, 'mobileLogout']);
     
     // === RUTAS PARA ACTAS ===
     
@@ -49,11 +56,6 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // Estadísticas generales
     Route::get('/mobile/estadisticas', [ActaController::class, 'estadisticas']);
-    
-    // === RUTAS DE AUTENTICACIÓN ===
-    
-    // Logout
-    Route::post('/mobile/logout', [AuthController::class, 'mobileLogout']);
     
     // Verificar estado de autenticación
     Route::get('/mobile/auth/check', function (Request $request) {
