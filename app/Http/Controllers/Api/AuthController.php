@@ -31,6 +31,14 @@ class AuthController extends Controller
             ], 401);
         }
 
+        // Verificar que no sea administrador (solo usuarios pueden usar la app móvil)
+        if ($user->role === 'admin' || $user->is_admin == 1) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Esta aplicación está destinada solo para usuarios. Los administradores deben usar el panel web.'
+            ], 403);
+        }
+
         // Revocar tokens existentes
         $user->tokens()->delete();
 
