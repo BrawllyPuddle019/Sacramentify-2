@@ -33,6 +33,9 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // Cambiar contraseña (MOVIDO AQUÍ)
     Route::post('/mobile/change-password', [AuthController::class, 'changePassword']);
+
+     // Enviar mensaje de soporte
+    Route::post('/mobile/support', [AuthController::class, 'sendSupportMessage']);
     
     // Logout
     Route::post('/mobile/logout', [AuthController::class, 'mobileLogout']);

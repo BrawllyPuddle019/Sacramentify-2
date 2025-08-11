@@ -138,4 +138,62 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Enviar mensaje de soporte al administrador
+     */
+    public function sendSupportMessage(Request $request)
+    {
+        try {
+            $request->validate([
+                'subject' => 'required|string|max:200',
+                'message' => 'required|string|max:1000',
+            ]);
+
+            $user = $request->user();
+            
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Usuario no autenticado'
+                ], 401);
+            }
+
+            // Crear el mensaje de soporte (puedes guardarlo en BD o enviarlo por email)
+            $supportData = [
+                'user_id' => $user->id,
+                'user_name' => $user->name,
+                'user_email' => $user->email,
+                'subject' => $request->subject,
+                'message' => $request->message,
+                'created_at' => now(),
+            ];
+
+            // Log del mensaje para que el admin lo vea
+            Log::info('MENSAJE DE SOPORTE RECIBIDO', $supportData);
+
+            // Aquí podrías:
+            // 1. Guardar en una tabla 'support_messages'
+            // 2. Enviar email al admin
+            // 3. O simplemente loggearlo como está arriba
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Tu mensaje de soporte ha sido enviado correctamente. El administrador lo revisará pronto.'
+            ]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Datos inválidos',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Error al enviar mensaje de soporte: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error interno del servidor'
+            ], 500);
+        }
+    }
 }
