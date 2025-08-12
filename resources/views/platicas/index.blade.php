@@ -21,8 +21,8 @@
                         <thead class="table-dark text-white">
                             <tr>
                                 <th scope="col">ID</th>
-                                <th scope="col">Padre</th>
-                                <th scope="col">Madre</th>
+                                <th scope="col">Padre/Padrino</th>
+                                <th scope="col">Madre/Madrina</th>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Fecha</th>
                                 @if(auth()->user() && auth()->user()->is_admin)
