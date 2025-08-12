@@ -33,6 +33,9 @@ Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallba
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+// Ruta para generar reporte PDF del dashboard
+Route::get('/dashboard/report/pdf', [App\Http\Controllers\HomeController::class, 'generateReport'])->name('dashboard.report.pdf')->middleware('auth');
+
 Route::resource('personas', PersonaController::class);
 
 // Rutas de Actas con middleware de créditos

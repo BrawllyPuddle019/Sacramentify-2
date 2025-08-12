@@ -11,6 +11,7 @@ use App\Models\Ermita;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class HomeController extends Controller
 {
@@ -121,6 +122,56 @@ class HomeController extends Controller
         $matrimonioCount = Acta::where('tipo_acta', 1)->count();
 
         return view('partials.counter_cards', compact('bautizoCount', 'matrimonioCount', 'confirmacionCount'));
+    }
+
+    public function generateReport()
+    {
+        // Obtener todos los datos del dashboard
+        $totalActas = Acta::count();
+        $totalPersonas = Persona::count();
+        $totalSacerdotes = Sacerdote::count();
+        $totalErmitas = Ermita::count();
+        $totalUsuarios = User::count();
+
+        // Contadores por tipo de sacramento
+        $bautizoCount = Acta::where('tipo_acta', 2)->count();
+        $confirmacionCount = Acta::where('tipo_acta', 3)->count();
+        $matrimonioCount = Acta::where('tipo_acta', 1)->count();
+
+        // Estadísticas mensuales
+        $monthlyStats = $this->getMonthlyStats();
+
+        // Top ermitas
+        $topErmitas = $this->getTopErmitas();
+
+        // Estadísticas por año
+        $yearlyStats = $this->getYearlyStats();
+
+        // Datos adicionales para el reporte
+        $reportData = [
+            'fecha_generacion' => Carbon::now()->locale('es')->isoFormat('dddd, D [de] MMMM [de] YYYY [a las] HH:mm'),
+            'usuario' => auth()->user()->name,
+            'totalActas' => $totalActas,
+            'totalPersonas' => $totalPersonas,
+            'totalSacerdotes' => $totalSacerdotes,
+            'totalErmitas' => $totalErmitas,
+            'totalUsuarios' => $totalUsuarios,
+            'bautizoCount' => $bautizoCount,
+            'matrimonioCount' => $matrimonioCount,
+            'confirmacionCount' => $confirmacionCount,
+            'monthlyStats' => $monthlyStats,
+            'topErmitas' => $topErmitas,
+            'yearlyStats' => $yearlyStats,
+        ];
+
+        // Generar PDF
+        $pdf = Pdf::loadView('reports.dashboard', $reportData);
+        $pdf->setPaper('A4', 'portrait');
+        
+        // Nombre del archivo con fecha
+        $filename = 'Reporte_Dashboard_' . Carbon::now()->format('Y_m_d_H_i_s') . '.pdf';
+        
+        return $pdf->download($filename);
     }
 }
 

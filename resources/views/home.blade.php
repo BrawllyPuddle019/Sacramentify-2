@@ -5,7 +5,7 @@
     <!-- Header con saludo personalizado -->
     <div class="row mb-4">
         <div class="col-12">
-            <div class="welcome-header">
+            <div class="welcome-header position-relative">
                 <div class="welcome-content">
                     <div class="welcome-greeting">
                         <h1>¡Bienvenido, {{ auth()->user()->name }}!</h1>
@@ -17,6 +17,17 @@
                             <span>{{ \Carbon\Carbon::now()->locale('es')->isoFormat('dddd, D [de] MMMM [de] YYYY') }}</span>
                         </div>
                     </div>
+                </div>
+                
+                <!-- Botón Flotante de Reporte PDF -->
+                <div class="floating-report-btn">
+                    <button type="button" class="btn btn-report" onclick="generateDashboardReport()" title="Descargar Reporte PDF">
+                        <div class="btn-report-content">
+                            <i class="fas fa-file-pdf"></i>
+                            <span class="btn-report-text">Reporte</span>
+                        </div>
+                        <div class="btn-report-shine"></div>
+                    </button>
                 </div>
                 
                 @if($userCredits->available_credits <= 5)
@@ -263,6 +274,120 @@
 @push('scripts')
 <!-- Chart.js for Dashboard Charts -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+/* Botón Flotante de Reporte PDF */
+.floating-report-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+}
+
+.btn-report {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    border: none;
+    border-radius: 50px;
+    padding: 12px 20px;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    min-width: 120px;
+}
+
+.btn-report:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+    background: linear-gradient(135deg, #c0392b, #a93226);
+    color: white;
+}
+
+.btn-report-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    z-index: 2;
+}
+
+.btn-report-content i {
+    font-size: 16px;
+    animation: pulse-pdf 2s infinite;
+}
+
+.btn-report-text {
+    font-weight: 600;
+}
+
+.btn-report-shine {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.btn-report:hover .btn-report-shine {
+    left: 100%;
+}
+
+@keyframes pulse-pdf {
+    0%, 100% {
+        transform: scale(1);
+        color: #fff;
+    }
+    50% {
+        transform: scale(1.1);
+        color: #ffeaa7;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .floating-report-btn {
+        position: static;
+        display: flex;
+        justify-content: center;
+        margin-top: 15px;
+    }
+    
+    .btn-report {
+        padding: 10px 16px;
+        font-size: 13px;
+        min-width: 100px;
+    }
+}
+</style>
+
+<script>
+// Función para generar reporte PDF del dashboard
+function generateDashboardReport() {
+    // Mostrar loading
+    const btn = document.querySelector('.btn-report');
+    const originalContent = btn.innerHTML;
+    
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando...';
+    btn.disabled = true;
+    
+    // Simular delay de generación
+    setTimeout(() => {
+        // Crear enlace de descarga
+        window.location.href = '/dashboard/report/pdf';
+        
+        // Restaurar botón
+        setTimeout(() => {
+            btn.innerHTML = originalContent;
+            btn.disabled = false;
+        }, 1000);
+    }, 1500);
+}
+</script>
 
 <script>
 $(document).ready(function() {
