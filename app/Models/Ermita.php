@@ -44,4 +44,9 @@ class Ermita extends Model
     {
         return $this->belongsTo(Municipio::class, 'cve_municipio');
     }
+
+    public function actas()
+    {
+        return $this->hasMany(Acta::class, 'cve_ermitas', 'cve_ermitas');
+    }
 }

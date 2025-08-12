@@ -83,23 +83,22 @@ class ErmitaController extends Controller
             $ermita = Ermita::findOrFail($id);
             
             // Verificar si tiene actas relacionadas
-            $actasCount = $ermita->actas()->count();
+            $actasCount = \App\Models\Acta::where('cve_ermitas', $ermita->cve_ermitas)->count();
             if($actasCount > 0) {
-                return redirect()->back()->with('error', 
-                    '❌ No se puede eliminar esta ermita porque tiene ' . 
-                    $actasCount . ' acta' . ($actasCount > 1 ? 's' : '') . ' sacramental' . ($actasCount > 1 ? 'es' : '') . ' registrada' . ($actasCount > 1 ? 's' : '') . '. ' .
-                    'Para eliminar esta ermita, primero debes reasignar o eliminar las actas asociadas.'
+                return redirect()->route('ermitas.index')->with('error', 
+                    "⚠️ No se puede eliminar la ermita '{$ermita->nombre_ermita}' porque tiene {$actasCount} acta" . ($actasCount > 1 ? 's' : '') . " sacramental" . ($actasCount > 1 ? 'es' : '') . " registrada" . ($actasCount > 1 ? 's' : '') . ". 📜 Elimine primero las actas correspondientes."
                 );
             }
             
             $ermita->delete();
             
-            return redirect()->route('ermitas.index')->with('success', '✅ Ermita eliminada exitosamente.');
-        } catch (\Illuminate\Database\QueryException $e) {
-            if ($e->getCode() == 23000) {
-                return redirect()->route('ermitas.index')->with('error', '❌ No se puede eliminar la ermita porque está siendo utilizada en otros registros.');
-            }
-            return redirect()->route('ermitas.index')->with('error', '❌ Error al eliminar la ermita: ' . $e->getMessage());
+            return redirect()->route('ermitas.index')->with('success', 
+                "✅ Ermita '{$ermita->nombre_ermita}' eliminada correctamente. ⛪"
+            );
+        } catch (\Exception $e) {
+            return redirect()->route('ermitas.index')->with('error', 
+                '❌ Error al eliminar la ermita: ' . $e->getMessage()
+            );
         }
     }
 

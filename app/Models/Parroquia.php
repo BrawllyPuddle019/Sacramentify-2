@@ -46,6 +46,6 @@ class Parroquia extends Model
 
     public function ermitas()
     {
-        return $this->hasMany(Ermita::class, 'cve_parroquias');
+        return $this->hasMany(Ermita::class, 'cve_parroquia', 'cve_parroquia');
     }
 }

@@ -29,8 +29,16 @@
                             @foreach ($diocesis as $diocesi)
                             <tr>
                                 <td data-label="ID">{{$diocesi->cve_diocesis}}</td>
-                                <td data-label="Obispo">{{$diocesi->obispo ? $diocesi->obispo->nombre : 'Sin obispo asignado'}}</td>
-                                <td data-label="Nombre">{{$diocesi->nombre}}</td>
+                                <td data-label="Obispo">
+                                    @if($diocesi->obispo)
+                                        {{$diocesi->obispo->nombre_obispo}}
+                                        {{$diocesi->obispo->apellido_paterno}}
+                                        {{$diocesi->obispo->apellido_materno}}
+                                    @else
+                                        Sin obispo asignado
+                                    @endif
+                                </td>
+                                <td data-label="Nombre">{{$diocesi->nombre}} </td>
                                 <td data-label="Dirección">{{$diocesi->direccion_diocesis}}</td>
                                 <td data-label="Acciones" class="actions-column">
                                     <div class="btn-group-compact">
