@@ -73,8 +73,18 @@ class DiocesiController extends Controller
     public function destroy($id)
     {
         $diocesis = Diocesi::findOrFail($id);
+        
+        // Verificar si la diócesis tiene parroquias relacionadas
+        $parroquiasRelacionadas = \App\Models\Parroquia::where('cve_diocesis', $diocesis->cve_diocesis)->count();
+        
+        if ($parroquiasRelacionadas > 0) {
+            return redirect()->route('diocesis.index')->with('error', 
+                "⚠️ No se puede eliminar la diócesis '{$diocesis->nombre}' porque tiene {$parroquiasRelacionadas} parroquia(s) relacionada(s). ⛪ Reasigne o elimine primero las parroquias correspondientes.");
+        }
+        
         $diocesis->delete();
 
-        return redirect()->route('diocesis.index');
+        return redirect()->route('diocesis.index')->with('success', 
+            "✅ Diócesis '{$diocesis->nombre}' eliminada correctamente. 🏛️");
     }
 }

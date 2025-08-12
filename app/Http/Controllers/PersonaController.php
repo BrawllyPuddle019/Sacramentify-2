@@ -105,7 +105,80 @@ class PersonaController extends Controller
     public function destroy($id)
     {
         $persona = Persona::findOrFail($id);
+        
+        // Verificar si la persona tiene actas relacionadas
+        $actasRelacionadas = 0;
+        $roles = [];
+        
+        // Verificar todas las posibles relaciones con actas
+        $actasComoPrincipal = \App\Models\Acta::where('cve_persona', $id)->count();
+        if ($actasComoPrincipal > 0) {
+            $actasRelacionadas += $actasComoPrincipal;
+            $roles[] = "persona principal ($actasComoPrincipal)";
+        }
+        
+        $actasComoSegunda = \App\Models\Acta::where('cve_persona2', $id)->count();
+        if ($actasComoSegunda > 0) {
+            $actasRelacionadas += $actasComoSegunda;
+            $roles[] = "segunda persona ($actasComoSegunda)";
+        }
+        
+        $actasComoPadrino = \App\Models\Acta::where('Per_cve_padrino', $id)->count();
+        if ($actasComoPadrino > 0) {
+            $actasRelacionadas += $actasComoPadrino;
+            $roles[] = "padrino ($actasComoPadrino)";
+        }
+        
+        $actasComoPadrino1 = \App\Models\Acta::where('Per_cve_padrino1', $id)->count();
+        if ($actasComoPadrino1 > 0) {
+            $actasRelacionadas += $actasComoPadrino1;
+            $roles[] = "padrino/testigo ($actasComoPadrino1)";
+        }
+        
+        $actasComoMadrina = \App\Models\Acta::where('Per_cve_madrina', $id)->count();
+        if ($actasComoMadrina > 0) {
+            $actasRelacionadas += $actasComoMadrina;
+            $roles[] = "madrina ($actasComoMadrina)";
+        }
+        
+        $actasComoMadrina1 = \App\Models\Acta::where('Per_cve_madrina1', $id)->count();
+        if ($actasComoMadrina1 > 0) {
+            $actasRelacionadas += $actasComoMadrina1;
+            $roles[] = "madrina/testigo ($actasComoMadrina1)";
+        }
+        
+        $actasComoPadre = \App\Models\Acta::where('Per_cve_padre', $id)->count();
+        if ($actasComoPadre > 0) {
+            $actasRelacionadas += $actasComoPadre;
+            $roles[] = "padre ($actasComoPadre)";
+        }
+        
+        $actasComoPadre1 = \App\Models\Acta::where('Per_cve_padre1', $id)->count();
+        if ($actasComoPadre1 > 0) {
+            $actasRelacionadas += $actasComoPadre1;
+            $roles[] = "padre alternativo ($actasComoPadre1)";
+        }
+        
+        $actasComoMadre = \App\Models\Acta::where('Per_cve_madre', $id)->count();
+        if ($actasComoMadre > 0) {
+            $actasRelacionadas += $actasComoMadre;
+            $roles[] = "madre ($actasComoMadre)";
+        }
+        
+        $actasComoMadre1 = \App\Models\Acta::where('Per_cve_madre1', $id)->count();
+        if ($actasComoMadre1 > 0) {
+            $actasRelacionadas += $actasComoMadre1;
+            $roles[] = "madre alternativa ($actasComoMadre1)";
+        }
+        
+        if ($actasRelacionadas > 0) {
+            $rolesTexto = implode(', ', $roles);
+            return redirect()->route('personas.index')->with('error', 
+                "⚠️ No se puede eliminar la persona '{$persona->nombre} {$persona->apellido_paterno}' porque tiene {$actasRelacionadas} acta(s) relacionada(s) como: {$rolesTexto}. 📜 Elimine primero las actas correspondientes.");
+        }
+        
         $persona->delete();
-        return redirect()->route('personas.index');
+        return redirect()->route('personas.index')->with('success', 
+            "✅ Persona '{$persona->nombre} {$persona->apellido_paterno}' eliminada correctamente. 👤");
     }
 }

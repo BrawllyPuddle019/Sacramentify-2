@@ -97,14 +97,14 @@ class SacerdoteController extends Controller
             
             if ($actasCount > 0) {
                 return redirect()->route('sacerdotes.index')
-                    ->with('error', "No se puede eliminar el sacerdote {$sacerdote->nombre_sacerdote} {$sacerdote->apellido_paterno} porque tiene {$actasCount} acta(s) asociada(s). Debe eliminar primero las actas relacionadas.");
+                    ->with('error', "❌ No se puede eliminar el sacerdote {$sacerdote->nombre_sacerdote} {$sacerdote->apellido_paterno} porque tiene {$actasCount} acta" . ($actasCount > 1 ? 's' : '') . " asociada" . ($actasCount > 1 ? 's' : '') . ". Para eliminar este sacerdote, primero debes reasignar o eliminar las actas relacionadas.");
             }
             
             $nombreCompleto = $sacerdote->nombre_sacerdote . ' ' . $sacerdote->apellido_paterno;
             $sacerdote->delete();
             
             return redirect()->route('sacerdotes.index')
-                ->with('success', "Sacerdote {$nombreCompleto} eliminado exitosamente.");
+                ->with('success', "✅ Sacerdote {$nombreCompleto} eliminado exitosamente.");
                 
         } catch (\Exception $e) {
             return redirect()->route('sacerdotes.index')

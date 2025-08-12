@@ -45,8 +45,17 @@ class SacramentoController extends Controller
 
     public function destroy(Sacramento $sacramento)
     {
+        // Verificar si el sacramento tiene actas relacionadas
+        $actasRelacionadas = \App\Models\Acta::where('tipo_acta', $sacramento->cve_sacramentos)->count();
+        
+        if ($actasRelacionadas > 0) {
+            return redirect()->route('sacramentos.index')->with('error', 
+                "⚠️ No se puede eliminar el sacramento '{$sacramento->nombre}' porque tiene {$actasRelacionadas} acta(s) relacionada(s). 📜 Elimine primero las actas correspondientes.");
+        }
+        
         $sacramento->delete();
 
-        return redirect()->route('sacramentos.index');
+        return redirect()->route('sacramentos.index')->with('success', 
+            "✅ Sacramento '{$sacramento->nombre}' eliminado correctamente. ✨");
     }
 }

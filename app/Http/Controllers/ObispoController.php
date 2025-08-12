@@ -84,8 +84,18 @@ class ObispoController extends Controller
     public function destroy($id)
     {
         $obispos = Obispo::findOrFail($id);
+        
+        // Verificar si el obispo tiene actas como celebrante
+        $actasComoCelebrante = \App\Models\Acta::where('cve_obispos_celebrante', $id)->count();
+        
+        if ($actasComoCelebrante > 0) {
+            return redirect()->route('sacerdotes.index')->with('error', 
+                "⚠️ No se puede eliminar el obispo '{$obispos->nombre}' porque tiene {$actasComoCelebrante} acta(s) como celebrante. 📜 Reasigne o elimine primero las actas correspondientes.");
+        }
+        
         $obispos->delete();
 
-        return redirect()->route('sacerdotes.index');
+        return redirect()->route('sacerdotes.index')->with('success', 
+            "✅ Obispo '{$obispos->nombre}' eliminado correctamente. 👨‍💼");
     }
 }

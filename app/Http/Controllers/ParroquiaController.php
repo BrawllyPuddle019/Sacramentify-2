@@ -78,9 +78,29 @@ class ParroquiaController extends Controller
      */
     public function destroy(Parroquia $parroquia)
     {
+        // Verificar si tiene ermitas relacionadas
+        $ermitasCount = $parroquia->ermitas()->count();
+        if($ermitasCount > 0) {
+            return redirect()->back()->with('error', 
+                '❌ No se puede eliminar esta parroquia porque tiene ' . 
+                $ermitasCount . ' ermita' . ($ermitasCount > 1 ? 's' : '') . ' asociada' . ($ermitasCount > 1 ? 's' : '') . '. ' .
+                'Elimina primero las ermitas o reasígnalas a otra parroquia.'
+            );
+        }
+
+        // Verificar si tiene sacerdotes relacionados
+        $sacerdotesCount = $parroquia->sacerdotes()->count();
+        if($sacerdotesCount > 0) {
+            return redirect()->back()->with('error', 
+                '❌ No se puede eliminar esta parroquia porque tiene ' . 
+                $sacerdotesCount . ' sacerdote' . ($sacerdotesCount > 1 ? 's' : '') . ' asociado' . ($sacerdotesCount > 1 ? 's' : '') . '. ' .
+                'Reasigna primero los sacerdotes a otra parroquia.'
+            );
+        }
+
         $parroquia->delete();
 
-        return redirect()->route('parroquias.index');
+        return redirect()->route('parroquias.index')->with('success', '✅ Parroquia eliminada correctamente.');
     }
 
     /**

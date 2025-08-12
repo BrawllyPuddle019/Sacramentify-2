@@ -79,9 +79,18 @@ class MunicipioController extends Controller
      */
     public function destroy(Municipio $municipio)
     {
+        // Verificar si el municipio tiene personas relacionadas
+        $personasRelacionadas = \App\Models\Persona::where('cve_municipio', $municipio->cve_municipio)->count();
+        
+        if ($personasRelacionadas > 0) {
+            return redirect()->route('municipios.index')->with('error', 
+                "⚠️ No se puede eliminar el municipio '{$municipio->nombre}' porque tiene {$personasRelacionadas} persona(s) relacionada(s). 👥 Reasigne o elimine primero las personas correspondientes.");
+        }
+        
         $municipio->delete();
         
-        return redirect()->route('municipios.index');
+        return redirect()->route('municipios.index')->with('success', 
+            "✅ Municipio '{$municipio->nombre}' eliminado correctamente. 🏘️");
     }
 }
    

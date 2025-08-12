@@ -79,7 +79,16 @@ class EstadoController extends Controller
      */
     public function destroy(Estado $estado)
     {
+        // Verificar si el estado tiene municipios relacionados
+        $municipiosRelacionados = \App\Models\Municipio::where('cve_estado', $estado->cve_estado)->count();
+        
+        if ($municipiosRelacionados > 0) {
+            return redirect()->route('municipios.index')->with('error', 
+                "⚠️ No se puede eliminar el estado '{$estado->nombre}' porque tiene {$municipiosRelacionados} municipio(s) relacionado(s). 🏘️ Reasigne o elimine primero los municipios correspondientes.");
+        }
+        
         $estado->delete();
-        return redirect()->route('municipios.index');
+        return redirect()->route('municipios.index')->with('success', 
+            "✅ Estado '{$estado->nombre}' eliminado correctamente. 🗺️");
     }
 }
